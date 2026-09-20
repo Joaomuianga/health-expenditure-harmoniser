@@ -9,6 +9,7 @@ import streamlit as st
 
 sys.path.insert(0, str(Path(__file__).resolve().parents[1] / "src"))
 from hxh.config import DEFAULT_DB  # noqa: E402
+from hxh import analysis as an  # noqa: E402
 
 st.set_page_config(page_title="Health expenditure harmoniser", layout="wide")
 
@@ -29,7 +30,7 @@ def q(sql: str, params=()) -> pd.DataFrame:
 STATUS_LABEL = {"AUTO": "Auto-accepted", "REVIEW": "Needs review", "UNMAPPED": "No supported target",
                 "REVIEWED": "Analyst-reviewed", "UNMAPPABLE_CONFIRMED": "Confirmed unmappable"}
 
-page = st.sidebar.radio("Workbench", ["Overview", "Review queue", "Data quality", "Explore results", "Trace a record", "Mappings & audit"])
+page = st.sidebar.radio("Workbench", ["Overview", "Review queue", "Data quality", "Analysis", "Explore results", "Trace a record", "Mappings & audit"])
 st.sidebar.caption("Prototype - synthetic data. Confidence values are ordinal priors, not calibrated probabilities.")
 run = q("SELECT * FROM pipeline_run ORDER BY run_id DESC LIMIT 1")
 if len(run):
@@ -143,6 +144,55 @@ elif page == "Data quality":
     rule = st.selectbox("Drill into a rule", sorted(summ.rule.unique()))
     st.dataframe(q(f"""SELECT COALESCE(e.country_code, s.country_code) country, e.record_key, e.source_txn_id, i.severity, i.message, i.action_taken {base}
                        WHERE i.rule=? LIMIT 500""", (rule,)), width="stretch", hide_index=True)
+
+# ------------------------------------------------------------------ Analysis
+elif page == "Analysis":
+    st.title("Analysis: how far can the results be trusted?")
+    st.write("Checks run on the harmonised data. They separate what the classification tells us from what it leaves open, and whether countries can be compared at all.")
+    t1, t2, t3, t4 = st.tabs(["Uncertainty band", "Comparability", "Which fields carry signal?", "Reversals, outliers, timing"])
+    con = conn()
+    with t1:
+        cov = an.coverage(con)
+        st.subheader("How much money is classified?")
+        v = cov.pivot(index="country_code", columns="auto_status", values="pct_value").fillna(0)
+        st.bar_chart(v.rename(columns={"AUTO": "Auto-accepted", "REVIEW": "Needs review", "UNMAPPED": "No supported target"}))
+        st.caption("Share of value (USD reference) by status. Value shares track record shares closely: review is not concentrated in large or small transactions.")
+        st.subheader("Range of spending per SHA code")
+        band = an.uncertainty_band(con, "sha")
+        cty = st.selectbox("Country", sorted(band.country_code.unique()))
+        b = band[band.country_code == cty].set_index("code")[["low_auto_only", "high_if_review_lands_here"]]
+        st.bar_chart(b)
+        st.dataframe(band[band.country_code == cty].assign(gap_pct_of_high=lambda x: (x.gap_pct_of_high * 100).round(0)), hide_index=True, width="stretch")
+        st.caption("Low = only auto-accepted records. High = plus every review record whose proposed or alternative code is this code. "
+                   "A wide gap means the conclusion for that code depends on analyst decisions (e.g. HC.5.1, HC.1.3 vs HC.6.4).")
+    with t2:
+        st.subheader("Are transaction sizes comparable across countries?")
+        sc = an.scale_check(con); st.dataframe(sc.round(1), hide_index=True, width="stretch")
+        st.warning("Country B's median transaction is about 27x Country A's after conversion. No plausible FX rate explains a gap this large; "
+                   "confirm units (e.g. thousands of XOF) and the extract's coverage with the country team before any cross-country comparison.")
+        u = an.usd_row_consistency(con)
+        st.subheader("Country C: do the USD rows sit on the same footing as the RWF rows?")
+        st.write(f"Reference rate used: **{u['reference_rate']:,.0f} RWF/USD**. The rate that would make USD-row and RWF-row medians agree, account by account, "
+                 f"is **{u['implied_rate_median']:,.0f}** (IQR {u['implied_rate_iqr'][0]:,.0f}-{u['implied_rate_iqr'][1]:,.0f}; {u['n_usd_rows']} USD rows, ~{u['n_usd_rows'] // max(u['n_accounts'], 1)} per account).")
+        st.caption("Weak evidence (few rows per account), but it shows the result is sensitive to the FX assumption. Use official period-average rates.")
+    with t3:
+        st.subheader("Do ministry or supplier tell us anything about what was bought?")
+        sg = an.signal_strength(con); st.dataframe(sg.round(3), hide_index=True, width="stretch")
+        st.caption("Cramer's V close to its independence baseline means no association. Ministry and supplier behave like random labels in all three files, "
+                   "which is why classification uses the account code and not counterparties.")
+        hm = an.health_ministry_share(con); hm["share"] = (hm.share * 100).round(1)
+        st.dataframe(hm.rename(columns={"share": "% of health-account records booked to the health ministry"}), hide_index=True, width="stretch")
+    with t4:
+        st.subheader("Reversals (negative amounts)")
+        st.dataframe(an.reversal_analysis(con).round(4), hide_index=True, width="stretch")
+        st.caption("None of the negative records has a positive record with the same account and amount, so they cannot be confirmed as reversals of a known entry. Kept and flagged; net effect on Country A is about -2%.")
+        o = an.outlier_scan(con)
+        st.subheader("Amount outliers within account")
+        st.write(f"{len(o)} records exceed a robust z-score of 3.5 (median/MAD on log amounts, per country and account).")
+        st.subheader("Monthly profile (USD reference, millions)")
+        mp = an.monthly_profile(con); mp = mp[mp.month < "2025"]
+        st.line_chart((mp.set_index("month") / 1e6))
+        st.caption("Flat profiles, no seasonality. Country B covers Oct 2023 - Sep 2024 (its fiscal year), A and C Jul 2023 - Jun 2024. Postings dated 2027 (5, Country C) are excluded from this chart.")
 
 # ------------------------------------------------------------------ Explore
 elif page == "Explore results":
