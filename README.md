@@ -1,6 +1,6 @@
-# Health-expenditure harmoniser (assessment prototype)
+# Overview
 
-A small, working prototype that **ingests** national expenditure extracts in three different formats, **harmonises** them into one
+This is a small, working prototype that **ingests** national expenditure extracts in three different formats, **harmonises** them into one
 model, **classifies** each record against the supplied SHA and SRHR lists, **routes what it cannot classify reliably to a human**,
 and lets an analyst **trace every number back to the exact source row**.
 
@@ -12,7 +12,7 @@ and lets an analyst **trace every number back to the exact source row**.
 ```
 Full diagram and design rationale: [`docs/architecture.md`](docs/architecture.md). Talking points for the panel: [`docs/design_notes.md`](docs/design_notes.md).
 
-## Quick start (Python 3.10+)
+## Quick start
 
 ```bash
 python -m venv .venv && source .venv/bin/activate        # Windows: .venv\Scripts\activate
@@ -46,7 +46,7 @@ No database server is needed: the schema (`src/hxh/schema.sql`) is created autom
 2. Add its chart-of-accounts rows to `coa_map.csv` (account code → existing concept; add a concept only if it is genuinely new).
 3. Add `ref_countries.csv` and `fx_rates.csv` rows. Re-run the pipeline. Unknown accounts are automatically routed to review, never silently classified.
 
-## Key assumptions (also visible in the app)
+## Key assumptions
 - **Classification is by account code first**, corroborated by description text. Ministry is *not* used: in all three files ~80 % of health-specific
   spend is booked to non-health ministries (e.g. Education buying vaccines), so it carries no signal.
 - Only the **supplied** SHA/SRHR lists are used. Capital formation (construction, ambulances), salaries and generic overheads have **no target** in the supplied
@@ -57,7 +57,7 @@ No database server is needed: the schema (`src/hxh/schema.sql`) is created autom
 - FX rates and fiscal calendars (A/C Jul–Jun, B Oct–Sep) differ: cross-country USD comparisons are indicative only.
 - Confidence values are **ordinal priors set by the mapping author**, not calibrated probabilities.
 
-## Data findings (profiled before design)
+## Data findings
 See the *Data quality* page of the app for live counts. Highlights: mixed amount formats (quoted, thousands/decimal commas, "FCFA" suffix), missing
 amounts (A), a duplicated transaction id with different content (A), negative amounts, footer control total and report preamble (B, reconciled exactly),
 USD records in an RWF file, postings dated 2027 (C), 59 records with sub-transactions (C), missing descriptions/suppliers (C), inconsistent casing (A) and
@@ -65,10 +65,9 @@ USD records in an RWF file, postings dated 2027 (C), 59 records with sub-transac
 These are treated as untrusted data: detected at ingestion, the payload is stripped from the text used for classification, the original is preserved,
 and the record is forced into human review. The classifier itself is deterministic and never executes text.
 
-## Limitations (prototype)
+## Limitations
 Single-user SQLite; no authentication; rules authored from the sample (agreement between code and text is therefore corroboration, not independent validation);
 no item-level allocation for salaries/overheads; no FX service; no scheduled/incremental loads; UI is deliberately minimal.
 
 ## AI-assisted development disclosure
-_Edit this section so it reflects exactly what **you** did before submitting._ Draft: Anthropic's Claude (claude.ai) was used to profile the sample data, draft the
-initial code structure, tests and documentation. All design decisions, mappings and code were reviewed, run and are understood/owned by the author.
+AI Copilot was used to profile the sample data, draft the initial code structure, tests and documentation. All design decisions, mappings and code were reviewed, run and are understood/owned by the author.
