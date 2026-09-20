@@ -70,4 +70,4 @@ Single-user SQLite; no authentication; rules authored from the sample (agreement
 no item-level allocation for salaries/overheads; no FX service; no scheduled/incremental loads; UI is deliberately minimal.
 
 ## AI-assisted development disclosure
-AI Copilot was used to profile the sample data, draft the initial code structure, tests and documentation. All design decisions, mappings and code were reviewed, run and are understood/owned by the author.
+Claude was used to profile the sample data, draft the initial code structure, tests and documentation. All design decisions, mappings and code were reviewed, run and are understood/owned by the author.
