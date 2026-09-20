@@ -1,0 +1,55 @@
+country_code,account_code,account_label,concept_id
+CTA,2110101,Basic salaries - permanent employees,SALARIES
+CTA,2210201,Communication supplies,COMMS
+CTA,2210301,Domestic travel,TRAVEL
+CTA,2211101,Medical drugs,MEDICINES
+CTA,2211102,Contraceptives and family planning commodities,CONTRACEPTIVES
+CTA,2211103,Vaccines,VACCINES
+CTA,2211105,HIV test kits and ARVs,HIV_COMMODITIES
+CTA,2211110,Maternity supplies and delivery kits,MATERNITY_KITS
+CTA,2211199,General medical consumables,MED_CONSUMABLES
+CTA,2211201,Laboratory reagents,LAB_REAGENTS
+CTA,2211305,Immunisation outreach,IMMUNISATION_OUTREACH
+CTA,2211306,Antenatal outreach services,ANC_OUTREACH
+CTA,2211308,Youth SRH counselling services,ADOLESCENT_SRH
+CTA,2211320,Cervical cancer screening,CERVICAL_SCREENING
+CTA,2211404,SGBV survivor support services,SGBV
+CTA,2211407,Cleaning and fumigation - health facilities,FACILITY_CLEANING
+CTA,2211501,Refined fuels,FUEL
+CTA,2211511,Printing and stationery,PRINTING_OFFICE
+CTA,3110101,Construction of buildings - health facilities,CONSTRUCTION
+CTA,3110701,Purchase of vehicles - ambulances,AMBULANCES
+CTB,610100,Traitements et salaires - personnel permanent,SALARIES
+CTB,610200,Frais de fonctionnement,OPERATING_GENERIC
+CTB,611010,Achat de medicaments essentiels,MEDICINES
+CTB,611015,Achat de contraceptifs et produits de planification familiale,CONTRACEPTIVES
+CTB,611020,Achat de vaccins et intrants immunisation,VACCINES
+CTB,611025,Kits de tests VIH et antiretroviraux,HIV_COMMODITIES
+CTB,611030,Kits obstetricaux et accouchement,MATERNITY_KITS
+CTB,611040,Reactifs et consommables de laboratoire,LAB_REAGENTS
+CTB,612010,Campagnes de sensibilisation - sante maternelle,MATERNAL_AWARENESS
+CTB,612015,Campagnes de sensibilisation - VIH/SIDA,HIV_AWARENESS
+CTB,612020,Depistage precoce du cancer du col,CERVICAL_SCREENING
+CTB,612025,Services de conseil SRH pour adolescents,ADOLESCENT_SRH
+CTB,612030,Appui aux victimes de VBG,SGBV
+CTB,613010,Nettoyage et hygiene - formations sanitaires,FACILITY_CLEANING
+CTB,613020,Carburants et lubrifiants,FUEL
+CTB,613030,Imprimerie et fournitures de bureau,PRINTING_OFFICE
+CTB,614010,Construction et rehabilitation - centres de sante,CONSTRUCTION
+CTB,614020,Achat de vehicules - ambulances,AMBULANCES
+CTC,2210101,Regular staff salaries,SALARIES
+CTC,2210105,Office supplies,PRINTING_OFFICE
+CTC,2211001,Essential medicines,MEDICINES
+CTC,2211005,Contraceptives,CONTRACEPTIVES
+CTC,2211010,Vaccines and cold chain supplies,VACCINES
+CTC,2211015,HIV test kits and antiretrovirals,HIV_COMMODITIES
+CTC,2211020,Delivery kits and obstetric supplies,MATERNITY_KITS
+CTC,2211050,Laboratory reagents,LAB_REAGENTS
+CTC,2212010,Health promotion - youth SRH,ADOLESCENT_SRH
+CTC,2212015,Cervical cancer screening campaign,CERVICAL_SCREENING
+CTC,2212020,GBV survivor psycho-social support,SGBV
+CTC,2212030,ANC outreach - rural districts,ANC_OUTREACH
+CTC,2213010,Health facility cleaning contracts,FACILITY_CLEANING
+CTC,2213020,Fuel and transport - health services,FUEL_TRANSPORT_HEALTH
+CTC,2214010,Construction of health posts,CONSTRUCTION
+CTC,2214020,Ambulance procurement,AMBULANCES

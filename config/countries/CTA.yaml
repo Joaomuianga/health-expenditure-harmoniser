@@ -1,0 +1,21 @@
+# Country A - flat CSV, KES, day/month/year dates, one currency column-less file
+country_code: CTA
+source:
+  file: country_a_expenditure.csv
+  format: csv
+  encoding: utf-8
+  delimiter: ","
+fields:                       # canonical field  <-  source column
+  source_txn_id: TXN_ID
+  txn_date: DATE
+  ministry_code: MINISTRY_CODE
+  ministry_name: MINISTRY_NAME
+  account_code: ACCOUNT_CODE
+  description: DESCRIPTION
+  supplier: VENDOR
+  amount: AMOUNT_KES
+currency:
+  fixed: KES                  # no currency column: the column header carries it
+date_formats: ["%d/%m/%Y"]
+expected_period: ["2023-07-01", "2024-06-30"]   # Jul-Jun fiscal year
+health_ministry_codes: ["MOH"]

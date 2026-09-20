@@ -1,0 +1,27 @@
+rule_id,priority,pattern,concept_id,lang
+K01,10,"immunis.*outreach|outreach.*immunis",IMMUNISATION_OUTREACH,en
+K02,10,"(sensibilisation|campagne|awareness).*(vih|hiv)",HIV_AWARENESS,fr/en
+K03,10,"sensibilisation.*maternelle|awareness.*maternal",MATERNAL_AWARENESS,fr/en
+K04,10,"fuel.*(health|sante)",FUEL_TRANSPORT_HEALTH,en
+K05,15,"reparation.*vehicule|vehicle repair",VEHICLE_REPAIR,fr/en
+K06,20,"vaccin",VACCINES,fr/en
+K07,20,"contracepti|planification familiale|family planning",CONTRACEPTIVES,fr/en
+K08,20,"antenatal|\banc\b",ANC_OUTREACH,en
+K09,20,"youth|adolescent",ADOLESCENT_SRH,fr/en
+K10,20,"cervical|cancer du col",CERVICAL_SCREENING,fr/en
+K11,20,"sgbv|\bgbv\b|\bvbg\b|survivor|victimes",SGBV,fr/en
+K12,20,"laborator|reactif|reagent",LAB_REAGENTS,fr/en
+K13,20,"cleaning|nettoyage|fumigation",FACILITY_CLEANING,fr/en
+K14,20,"ambulance",AMBULANCES,fr/en
+K15,20,"construction|rehabilitation",CONSTRUCTION,fr/en
+K16,25,"formation|training",TRAINING,fr/en
+K17,30,"hiv|vih|antiretro|\barvs?\b",HIV_COMMODITIES,fr/en
+K18,30,"maternity|obstetri|delivery kit|accouchement",MATERNITY_KITS,fr/en
+K19,30,"medicaments|medical drugs|medicines|\bdrugs\b",MEDICINES,fr/en
+K20,30,"salar|traitements",SALARIES,fr/en
+K21,30,"frais de fonctionnement|operating",OPERATING_GENERIC,fr/en
+K22,30,"communication",COMMS,en
+K23,30,"domestic travel|deplacement",TRAVEL,fr/en
+K24,30,"printing|stationery|imprimerie|office supplies|fournitures de bureau",PRINTING_OFFICE,fr/en
+K25,30,"fuel|carburant|lubrifiant",FUEL,fr/en
+K26,40,"consumables|consommables|fournitures medicales|gants|masques|gloves",MED_CONSUMABLES,fr/en

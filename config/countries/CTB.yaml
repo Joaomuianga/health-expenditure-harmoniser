@@ -1,0 +1,26 @@
+# Country B - Excel, French, report-style sheet (preamble + header on row 7 + footer TOTAL row)
+country_code: CTB
+source:
+  file: country_b_depenses.xlsx
+  format: excel
+  sheet: Depenses
+  header_row: 7               # 1-based row number of the column headers
+  coa_sheet: Plan_comptable   # second sheet holds the chart of accounts
+  control_total:              # footer row that carries a control total
+    id_column: id_transaction
+    marker: TOTAL
+    amount_column: montant_XOF
+fields:
+  source_txn_id: id_transaction
+  txn_date: date_ecriture
+  ministry_code: ministere_code
+  ministry_name: ministere_nom
+  account_code: code_budgetaire
+  description: libelle
+  supplier: tiers
+  amount: montant_XOF
+currency:
+  fixed: XOF
+date_formats: ["%d-%m-%Y"]
+expected_period: ["2023-10-01", "2024-09-30"]   # Oct-Sep fiscal year
+health_ministry_codes: ["MSAS"]
