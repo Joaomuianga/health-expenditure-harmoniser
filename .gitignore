@@ -6,3 +6,7 @@ db/*.sqlite-journal
 data/raw/*
 !data/raw/README.md
 .venv/
+
+*.egg-info/
+.agents/
+.claude/
